@@ -25,15 +25,11 @@ class model
         /*****************************************/
 
         // "../../secure/nxtlvl/inc.config.php"
-<<<<<<< HEAD
+
         /*
         if($configPath)
             require_once($configPath);
          */
-=======
-        //if($configPath)
-        //    require_once($configPath);
->>>>>>> 1f5ad7d25d523e0adefc17108485283e80cdf859
 
         $services = getenv("VCAP_SERVICES");
         $services_json = json_decode($services,true);
@@ -45,12 +41,10 @@ class model
         define('_DB_PORT_', $mysql_config["port"]);
 
         // set model.conn to reference to mysql connection
-<<<<<<< HEAD
+
         $this->conn = mysql_connect(_DB_HOST_.':'._DB_PORT_, _DB_USER_, _DB_PASSWORD_);
         print mysql_error();
-=======
-        $this->conn = mysql_connect(_DB_HOST_.':'._DB_PORT_, _DB_USER_, _DB_PASS_);
->>>>>>> 1f5ad7d25d523e0adefc17108485283e80cdf859
+
         if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
         // set model.tbl to current table if it is passed on object initialization
