@@ -25,11 +25,23 @@ class model
         /*****************************************/
 
         // "../../secure/nxtlvl/inc.config.php"
+        /*
         if($configPath)
             require_once($configPath);
+         */
+
+        $services = getenv("VCAP_SERVICES");
+        $services_json = json_decode($services,true);
+        $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
+        define('_DB_NAME_', $mysql_config["name"]);
+        define('_DB_USER_', $mysql_config["user"]);
+        define('_DB_PASSWORD_', $mysql_config["password"]);
+        define('_DB_HOST_', $mysql_config["hostname"]);
+        define('_DB_PORT_', $mysql_config["port"]);
 
         // set model.conn to reference to mysql connection
-        $this->conn = mysql_connect(_DB_SERVER_, _DB_USER_, _DB_PASS_);
+        $this->conn = mysql_connect(_DB_HOST_.':'._DB_PORT_, _DB_USER_, _DB_PASSWORD_);
+        print mysql_error();
         if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
         // set model.tbl to current table if it is passed on object initialization
@@ -124,7 +136,7 @@ class model
                 case 'assoc':
                     if (_DEBUG_) dbg::msg("Return type is assoc", __METHOD__);
                     // Begin Development Section
-                    
+
                     if($this->rowCount > 1) {
                         $ret =array();
                         $count = 0;
@@ -137,7 +149,7 @@ class model
                     }
                     else
                         $ret = mysql_fetch_assoc($result);
-                    
+
                     // End Development Section
                     if (_DEBUG_) dbg::msg("Result fetched.", __METHOD__);
                     break;
@@ -166,7 +178,7 @@ class model
     {
         if (_DEBUG_) dbg::msg("Initialized", __METHOD__);
         /*****************************************/
-        
+
         $this->validateVals($vals);
     }
     public function assemble ()
@@ -186,7 +198,7 @@ class model
                 if(!isset($this->cols)) throw Exception("Cols not set.");
                 if(!isset($this->values)) throw Exception("Values not set.");
                 if($this->updateOnDup && !isset($this->where)) throw Exception("Where not set.");
-                
+
                 $sql = "INSERT INTO $this->tbl ($this->cols) VALUES ($this->values)";
                 $this->updateOnDup ? $sql .= " ON DUPLICATE KEY UPDATE $this->where" : $sql .= '';
                 return $sql;
@@ -207,7 +219,7 @@ class model
                         else
                             $sql .= ",$colsArr[$i]=$valsArr[$i]";
                     }
-                    
+
                     return "UPDATE $this->tbl SET $sql WHERE $this->where";
                 }
                 break;
@@ -228,7 +240,7 @@ class model
         if(preg_match_all($pattern, $tbl, $tokens)) {
             $dbTok = $tokens[1][0];
             $tblTok = $tokens[2][0];
-            
+
             return '`'.$this->mysqlSanitize($dbTok).'`.`'
                     .$this->mysqlSanitize($tblTok).'`';
         }
