@@ -19,22 +19,32 @@ class model
     private $updateOnDup;
     private $rowCount;
 
-    function __construct ($configPath=NULL, $tbl=NULL, $type=NULL)
+    function __construct ($tbl=NULL, $type=NULL)
     {
         if (_DEBUG_) dbg::msg("Initialized", __METHOD__);
         /*****************************************/
 
         // "../../secure/nxtlvl/inc.config.php"
-        if($configPath)
-            require_once($configPath);
+        //if($configPath)
+        //    require_once($configPath);
+
+        $services = getenv("VCAP_SERVICES");
+        $services_json = json_decode($services,true);
+        $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
+        define('_DB_NAME_', $mysql_config["name"]);
+        define('_DB_USER_', $mysql_config["user"]);
+        define('_DB_PASSWORD_', $mysql_config["password"]);
+        define('_DB_HOST_', $mysql_config["hostname"]);
+        define('_DB_PORT_', $mysql_config["port"]);
 
         // set model.conn to reference to mysql connection
-        $this->conn = mysql_connect(_DB_SERVER_, _DB_USER_, _DB_PASS_);
+        $this->conn = mysql_connect(_DB_HOST_.':'._DB_PORT_, _DB_USER_, _DB_PASS_);
         if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
         // set model.tbl to current table if it is passed on object initialization
         if(!is_null($tbl))
         {
+            $tbl = '`'._DB_NAME_.'`.`'.$tbl.'`';
             $this->from($tbl);
             if (_DEBUG_) dbg::msg("model.tbl set to $tbl", __METHOD__);
         }
