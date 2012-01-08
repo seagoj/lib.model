@@ -11,6 +11,7 @@ if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
  *
  * @author jds
  */
+
 class model
 {
     private $conn;
@@ -348,8 +349,12 @@ class model
 
     public function unitTest()
     {
+       
         try
         {
+            $select = new model();
+            print "EOF";
+            /*
             $select = new model();
             $select->from('`464119_nxtlvl`.`config`');
             $select->type('SELECT');
@@ -383,6 +388,8 @@ class model
                 print "UPDATE method failed unit test.";
             else
                 print "UPDATE method passed unit test.";
+         * 
+         */
         }
         catch (Exception $e)
         {
