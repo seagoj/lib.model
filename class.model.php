@@ -1,4 +1,6 @@
 <?php
+print rand();
+
 define(_DEBUG_, getenv("DEBUG"));
 
 if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
