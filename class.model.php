@@ -3,7 +3,7 @@ print rand();
 $debug = getenv("DEBUG");
 define(_DEBUG_, $debug);
 
-//if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
+if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
 /**
  * Model class for personal MVC framework
