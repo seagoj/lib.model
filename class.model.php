@@ -24,13 +24,6 @@ class model
         if (_DEBUG_) dbg::msg("Initialized", __METHOD__);
         /*****************************************/
 
-        // "../../secure/nxtlvl/inc.config.php"
-
-        /*
-        if($configPath)
-            require_once($configPath);
-         */
-
         $services = getenv("VCAP_SERVICES");
         $services_json = json_decode($services,true);
         $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
