@@ -1,4 +1,5 @@
 <?php
+define(_DEBUG_, getenv("DEBUG"));
 
 if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
@@ -388,5 +389,5 @@ class model
     }
 }
 
-//if (_DEBUG_) model::unitTest();
+if (_DEBUG_) model::unitTest();
 ?>
