@@ -39,7 +39,8 @@ class model
 
         // set model.conn to reference to mysql connection
 
-        print $server = _DB_HOST_.':'._DB_PORT_;
+        $server = _DB_HOST_.':'._DB_PORT_;
+        print $server;
         $this->conn = mysql_connect($server, _DB_USER_, _DB_PASSWORD_);
         print mysql_error();
         if($this->conn) print "success";
