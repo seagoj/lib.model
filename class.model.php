@@ -116,8 +116,8 @@ class model
     }
 }
 
+print "BoF";
 $model = new model();
 print "EoF";
 
-//if (_DEBUG_) model::unitTest();
 ?>
