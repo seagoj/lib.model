@@ -51,68 +51,23 @@ class model
         //if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
         // set model.tbl to current table if it is passed on object initialization
+        /*
         if(!is_null($tbl))
         {
             $tbl = '`'._DB_NAME_.'`.`'.$tbl.'`';
             $this->from($tbl);
             if (_DEBUG_) dbg::msg("model.tbl set to $tbl", __METHOD__);
         }
+         */
         // set model.type to current type if it is passed on object initialization
+        /*
         if(!is_null($type))
         {
             $this->type($type);
             if (_DEBUG_) dbg::msg("model.type set to $type", __METHOD__);
         }
-    }
-
-    public function unitTest()
-    {
-       
-        try
-        {
-            $select = new model();
-            print "EOF";
-            /*
-            $select = new model();
-            $select->from('`464119_nxtlvl`.`config`');
-            $select->type('SELECT');
-            $select->columns('`value`');
-            $select->where("`variable`='companyName'");
-            $valid = "SELECT `value` FROM `464119_nxtlvl`.`config` WHERE `variable`='companyName'";
-            if($select->assemble() != $valid)
-                print "SELECT method failed unit test.";
-            else
-                print "SELECT method passed unit test.";
-
-            $insert = new model();
-            $insert->from('`464119_nxtlvl`.`config`');
-            $insert->type('INSERT');
-            $insert->columns('`variable`,`value`');
-            $insert->values("'companyName','test'");
-            $valid = "INSERT INTO `464119_nxtlvl`.`config` (`variable`,`value`) VALUES ('companyName','test')";
-            if($insert->assemble() != $valid)
-                print "INSERT method failed unit test.";
-            else
-                print "INSERT method passed unit test.";
-
-            $update = new model();
-            $update->from('`464119_nxtlvl`.`config`');
-            $update->type('UPDATE');
-            $update->columns('`variable`,`value`');
-            $update->values("'companyName','test'");
-            $update->where(true);
-            $valid = "UPDATE `464119_nxtlvl`.`config` SET `variable`='companyName',`value`='test' WHERE 1";
-            if($update->assemble() != $valid)
-                print "UPDATE method failed unit test.";
-            else
-                print "UPDATE method passed unit test.";
          * 
          */
-        }
-        catch (Exception $e)
-        {
-            print $e;
-        }
     }
 }
 
