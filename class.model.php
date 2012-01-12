@@ -1,7 +1,7 @@
 <?php
 print rand();
 define(_DEBUG_, isset($_REQUEST['debug']));
-    print _DEBUG_;
+//    print _DEBUG_;
 
 print "line 6";
 //if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
