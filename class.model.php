@@ -25,6 +25,8 @@ class model
 
     function __construct ($tbl=NULL, $type=NULL)
     {
+        print "begin model";
+
         //if (_DEBUG_) dbg::msg("Initialized", __METHOD__);
         /*****************************************/
 
