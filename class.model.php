@@ -12,23 +12,21 @@ define(_DEBUG_, isset($_REQUEST['debug']));
  * @author jds
  */
 
+    print "before class";
 class model
 {
     private $conn;
-    private $tbl;
-    private $type;
-    private $cols;
-    private $where;
-    private $values;
-    private $updateOnDup;
-    private $rowCount;
+    //private $tbl;
+    //private $type;
+    //private $cols;
+    //private $where;
+    //private $values;
+    //private $updateOnDup;
+    //private $rowCount;
 
     function __construct ($tbl=NULL, $type=NULL)
     {
         print "begin model";
-
-        //if (_DEBUG_) dbg::msg("Initialized", __METHOD__);
-        /*****************************************/
 
         $services = getenv("VCAP_SERVICES");
         $services_json = json_decode($services,true);
@@ -38,8 +36,6 @@ class model
         define('_DB_PASSWORD_', $mysql_config["password"]);
         define('_DB_HOST_', $mysql_config["hostname"]);
         define('_DB_PORT_', $mysql_config["port"]);
-
-        // set model.conn to reference to mysql connection
 
         $server = _DB_HOST_.':'._DB_PORT_;
         print $server;
