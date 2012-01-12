@@ -1,7 +1,7 @@
 <?php
 print rand();
-print getenv("_DEBUG_");
-//define(_DEBUG_, $_REQUEST['debug']);
+//print getenv("_DEBUG_");
+define(_DEBUG_, $_REQUEST['debug']);
 
     print _DEBUG_;
 
