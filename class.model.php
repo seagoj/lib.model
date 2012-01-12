@@ -3,7 +3,7 @@ print rand();
 define(_DEBUG_, isset($_REQUEST['debug']));
     print _DEBUG_;
 
-if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
+//if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
 /**
  * Model class for personal MVC framework
@@ -41,6 +41,7 @@ class model
 
         $this->conn = mysql_connect(_DB_HOST_.':'._DB_PORT_, _DB_USER_, _DB_PASSWORD_);
         print mysql_error();
+        if($this->conn) print "success";
 
         //if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
@@ -110,5 +111,8 @@ class model
     }
 }
 
-if (_DEBUG_) model::unitTest();
+$model = new model();
+print "EoF";
+
+//if (_DEBUG_) model::unitTest();
 ?>
