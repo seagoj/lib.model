@@ -1,6 +1,6 @@
 <?php
 print rand();
-define(_DEBUG_, isset($_REQUEST['debug']));
+define('_DEBUG_', isset($_REQUEST['debug']));
 //    print _DEBUG_;
 
 print "line 6";
