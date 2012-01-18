@@ -1,0 +1,3 @@
+[submodule "lib.dbg"]
+	path = lib.dbg
+	url = git@github.com:seagoj/lib.dbg.git
