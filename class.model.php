@@ -1,6 +1,6 @@
 <?php
 print "<div>BoF ".rand()."</div>";
-print "ENV VAR: ".getenv("DBG");
+print "ENV VAR: ".getenv("VCAP_SERVICES");
 define('_DEBUG_', isset($_REQUEST['dbg']));
     print _DEBUG_;
 if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
