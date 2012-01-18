@@ -1,5 +1,6 @@
 <?php
 print "BoF";
+print "Hello";
 print rand();
 define('_DEBUG_', isset($_REQUEST['debug']));
 //    print _DEBUG_;
