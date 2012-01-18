@@ -1,8 +1,8 @@
 <?php
 print "<div>BoF ".rand()."</div>";
 define('_DEBUG_', isset($_REQUEST['debug']));
-//    print _DEBUG_;
-//if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
+    print _DEBUG_;
+if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
 /**
  * Model class for personal MVC framework
@@ -25,8 +25,6 @@ class model
 
     function __construct ($tbl=NULL, $type=NULL)
     {
-        print "<div>begin model</div>";
-
         $services = getenv("VCAP_SERVICES");
         $services_json = json_decode($services,true);
         $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
@@ -37,11 +35,8 @@ class model
         define('_DB_PORT_', $mysql_config["port"]);
 
         $server = _DB_HOST_.':'._DB_PORT_;
-        print "<div>$server</div>";
         $this->conn = mysql_connect($server, _DB_USER_, _DB_PASSWORD_);
         print mysql_error();
-        if($this->conn) print "<div>success</div>";
-        else print "<div>fail</div>";
 
         //if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
@@ -66,7 +61,6 @@ class model
     }
 }
 
-print "BoF";
 $model = new model();
 print "EoF";
 
