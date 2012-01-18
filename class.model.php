@@ -1,6 +1,5 @@
 <?php
-print "BoF";
-print rand();
+print "<div>BoF".rand()."</div>";
 define('_DEBUG_', isset($_REQUEST['debug']));
 //    print _DEBUG_;
 
@@ -14,7 +13,7 @@ print "line 6";
  * @author jds
  */
 
-    print "before class";
+    print "<div>before class</div>";
 class model
 {
     private $conn;
@@ -28,7 +27,7 @@ class model
 
     function __construct ($tbl=NULL, $type=NULL)
     {
-        print "begin model";
+        print "<div>begin model</div>";
 
         $services = getenv("VCAP_SERVICES");
         $services_json = json_decode($services,true);
