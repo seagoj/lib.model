@@ -1,7 +1,8 @@
 <?php
 print "<div>BoF ".rand()."</div>";
 define('_DEBUG_', isset($_REQUEST['dbg']));
-    if(_DEBUG_) {
+print "DEBUG: "._DEBUG_;
+    if(_DEBUG_=='true') {
         print "Calling lib.dbg";
         //require_once("../lib.dbg/class.dbg.php");
     }
