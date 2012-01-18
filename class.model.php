@@ -1,6 +1,6 @@
 <?php
 print "<div>BoF ".rand()."</div>";
-define('_DEBUG_', isset($_REQUEST['debug']));
+define('_DEBUG_', isset($_REQUEST['dbg']));
     print _DEBUG_;
 if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
@@ -11,7 +11,6 @@ if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
  * @author jds
  */
 
-    print "<div>before class</div>";
 class model
 {
     private $conn;
