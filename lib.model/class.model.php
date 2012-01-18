@@ -4,7 +4,7 @@ define('_DEBUG_', isset($_REQUEST['dbg']));
 print "DEBUG: "._DEBUG_;
     if(_DEBUG_=='true') {
         print "Calling lib.dbg";
-        //require_once("../lib.dbg/class.dbg.php");
+        require_once("../lib.dbg/class.dbg.php");
     }
 
 /**
