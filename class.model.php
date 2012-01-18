@@ -4,7 +4,7 @@ print_r($_SERVER);
 //print "ENV VAR: ".getenv("DBG");
 define('_DEBUG_', isset($_REQUEST['dbg']));
     print _DEBUG_;
-if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
+//if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
 /**
  * Model class for personal MVC framework
