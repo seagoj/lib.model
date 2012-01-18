@@ -1,9 +1,7 @@
 <?php
-print "<div>BoF".rand()."</div>";
+print "<div>BoF ".rand()."</div>";
 define('_DEBUG_', isset($_REQUEST['debug']));
 //    print _DEBUG_;
-
-print "line 6";
 //if(_DEBUG_) require_once("../lib.dbg/class.dbg.php");
 
 /**
@@ -39,11 +37,11 @@ class model
         define('_DB_PORT_', $mysql_config["port"]);
 
         $server = _DB_HOST_.':'._DB_PORT_;
-        print $server;
-        //$this->conn = mysql_connect($server, _DB_USER_, _DB_PASSWORD_);
+        print "<div>$server</div>";
+        $this->conn = mysql_connect($server, _DB_USER_, _DB_PASSWORD_);
         print mysql_error();
-        if($this->conn) print "success";
-        else print "fail";
+        if($this->conn) print "<div>success</div>";
+        else print "<div>fail</div>";
 
         //if (_DEBUG_) dbg::msg("model.conn opened", __METHOD__);
 
