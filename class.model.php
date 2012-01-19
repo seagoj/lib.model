@@ -343,8 +343,8 @@ class model
         UNSET($this->values);
         UNSET($this->updateOnDup);
     }
-
-    private function UNIT()
+    
+    public function UNIT()
     {
         dbg::msg("<div>BoF ".rand()."</div>", __METHOD__);
 

@@ -24,5 +24,6 @@ class dbg
         $label=='' ? print '' : print "<span style='color:red;'>$label</span>: ";
         print "<span style='color:black;'>$dump</span></div>";
     }
+    
 }
 ?>
