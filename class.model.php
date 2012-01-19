@@ -1,11 +1,6 @@
 <?php
-print "<div>BoF ".rand()."</div>";
 define('_DEBUG_', isset($_REQUEST['dbg']));
-print "DEBUG: "._DEBUG_;
-    if(_DEBUG_=='true') {
-        print "Calling lib.dbg";
-        require_once("class.dbg.php");
-    }
+if(_DEBUG_) require_once("class.dbg.php");
 
 /**
  * Model class for personal MVC framework
@@ -350,6 +345,7 @@ class model
     }
 }
 
+print "<div>BoF ".rand()."</div>";
 $model = new model();
 print "EoF";
 

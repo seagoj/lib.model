@@ -1,5 +1,4 @@
 <?php
-print "<div>Start class DBG ".rand()."</div>";
 /**
  * Description of class
  *
