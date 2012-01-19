@@ -346,9 +346,9 @@ class model
     
     public function UNIT()
     {
-        dbg::msg("<div>BoF ".rand()."</div>", __METHOD__);
+        dbg::msg("BoF ".rand(), __METHOD__);
 
-        dbg::msg("<div>EoF</div>", __METHOD__);
+        dbg::msg("EoF", __METHOD__);
     }
 }
 
