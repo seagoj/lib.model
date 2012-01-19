@@ -368,8 +368,9 @@ class model
 
 if(_DEBUG_)
 {
-    $model = new model('dbconfig','default');
-    $model->query();
-    $model->UNIT();
+    $model = new model('dbconfig','select');
+    $model->assemble();
+    //$model->query();
+    //$model->UNIT();
 }
 ?>
