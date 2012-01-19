@@ -171,7 +171,7 @@ class model
                 case 'row':
                     $ret = mysql_fetch_row($result);
                     break;
-            };
+             };
             $this->reset();
             return $ret;
         }
@@ -369,6 +369,7 @@ class model
 if(_DEBUG_)
 {
     $model = new model('dbconfig','default');
+    $model->query();
     $model->UNIT();
 }
 ?>
