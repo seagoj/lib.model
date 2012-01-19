@@ -21,6 +21,11 @@ class model
     private $updateOnDup;
     private $rowCount;
 
+    /*
+     * @param   $tbl    STRING  Choose which table in the database to act upon
+     * @param   $type   STRING  Set action to work on the table
+     * @param   $build  BOOL    If true, create table if table doesn't exist
+     */
     function __construct ($tbl=NULL, $type=NULL)
     {
         $services = getenv("VCAP_SERVICES");
@@ -49,11 +54,14 @@ class model
         
         // set model.type to current type if it is passed on object initialization
         
-        if(!is_null($type))
-        {
-            $this->type($type);
+        if($type=='default' && _DEBUG_) {
+            $this->type('default');
             if (_DEBUG_) dbg::msg("model.type set to $type", __METHOD__);
-        }
+        } else if(!is_null($type) && $type!='default')
+            {
+                $this->type($type);
+                if (_DEBUG_) dbg::msg("model.type set to $type", __METHOD__);
+            }
     }
     function __destruct ()
     {
@@ -100,7 +108,7 @@ class model
             $this->updateOnDup=true;
         }
 
-        $this->type = $type;
+        $this->type = strtolower($type);
     }
     public function query($retType='assoc')
     {
@@ -186,11 +194,9 @@ class model
 
         switch($this->type)
         {
-            case 'SELECT':
             case 'select':
                 return "SELECT $this->cols FROM $this->tbl WHERE $this->where";
                 break;
-            case 'INSERT':
             case 'insert':
                 if(!isset($this->tbl)) throw Exception("Table not set.");
                 if(!isset($this->cols)) throw Exception("Cols not set.");
@@ -201,7 +207,6 @@ class model
                 $this->updateOnDup ? $sql .= " ON DUPLICATE KEY UPDATE $this->where" : $sql .= '';
                 return $sql;
                 break;
-            case 'UPDATE':
             case 'update':
                 $colsArr = explode(',', $this->cols);
                 $valsArr = explode(',', $this->values);
@@ -220,6 +225,15 @@ class model
 
                     return "UPDATE $this->tbl SET $sql WHERE $this->where";
                 }
+                break;
+            case 'default':
+                    /*CREATE TABLE  `464119_nxtlvl`.`test` (
+                     *  `index` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+                     *  `name` VARCHAR( 50 ) NOT NULL ,
+                     *  `sql` VARCHAR( 1000 ) NOT NULL
+                     *) ENGINE = INNODB
+                     */
+                    return "CREATE TABLE IF NOT EXISTS $this->tbl ( `index` INT NOT NULL AUTO_INCREMENT PRIMARY KEY , `name` VARCHAR( 50 ) NOT NULL , `sql` VARCHAR( 1000 ) NOT NULL) ENGINE = INNODB";
                 break;
         }
     }
@@ -354,7 +368,7 @@ class model
 
 if(_DEBUG_)
 {
-    $model = new model();
+    $model = new model('dbconfig');
     $model->UNIT();
 }
 ?>
