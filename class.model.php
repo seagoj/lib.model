@@ -368,7 +368,7 @@ class model
 
 if(_DEBUG_)
 {
-    $model = new model('dbconfig');
+    $model = new model('dbconfig','default');
     $model->UNIT();
 }
 ?>
