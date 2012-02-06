@@ -182,7 +182,7 @@ class model
                     $this->dbgMsg("Return type is assoc", __METHOD__);
                     // Begin Development Section
 
-                    if($this->rowCount > 1) {
+                    //if($this->rowCount > 1) {
                         $ret =array();
                         $count = 0;
 
@@ -192,7 +192,10 @@ class model
                             if(is_array($this->cols)){
                                 $var = $row[$this->cols[0]];
                                 $value = $row[$this->cols[1]];
-                                $new = array($var=>$value);
+                                if($value==NULL)
+                                    $new = array('value'=>$var);
+                                else
+                                    $new = array($var=>$value);
                                 $ret = $ret + $new;
                                 /*
                                 foreach($this->cols AS $key) {
@@ -207,9 +210,9 @@ class model
                                 $ret[$key] = $row['value'];
                             }
                         }
-                    }
-                    else
-                        $ret = mysql_fetch_assoc($result);
+                    //}
+                    //else
+                    //    $ret = mysql_fetch_assoc($result);
 
                     // End Development Section
                     $this->dbgMsg("Result fetched.", __METHOD__);
