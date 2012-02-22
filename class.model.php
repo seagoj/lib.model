@@ -317,7 +317,7 @@ class model
     private function setDbg()
     {
         $this->dbg = isset($_REQUEST['dbg']);
-        if($this->dbg) require_once("../lib.dbg/class.dbg.php");
+        if($this->dbg) require_once("lib.dbg/class.dbg.php");
     }
     private function dbgMsg($msg, $method, $exception=false)
     {
