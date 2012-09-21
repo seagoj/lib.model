@@ -1,4 +1,10 @@
 <?php
+include_once('../inc.config.php');
+if($dbg)
+	require_once($libpath.'/lib.dbg/src/class.dbg.php');
+dbg::msg("It works!");
+
+
 /**
  * Model class for personal MVC framework
  * Only class with knowledge of the database connections
