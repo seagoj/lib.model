@@ -530,7 +530,7 @@ class model
 
                 if(isset($mysql_config)) {
                     //return $mysql_config;
-                    define('_DB_NAME_', $mysql_config["name"]);
+                    define('_DB_NAME_', $mysql_config["dbname"]);
                     define('_DB_USER_', $mysql_config["user"]);
                     define('_DB_PASSWORD_', $mysql_config["password"]);
                     define('_DB_HOST_', $mysql_config["hostname"]);
