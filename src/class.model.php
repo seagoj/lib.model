@@ -179,43 +179,7 @@ class model
                     $ret = mysql_fetch_array($result);
                     break;
                 case 'assoc':
-                    $this->dbgMsg("Return type is assoc", __METHOD__);
-                    // Begin Development Section
-
-                    //if($this->rowCount > 1) {
-                        $ret =array();
-                        $count = 0;
-
-
-                        while($row=mysql_fetch_assoc($result))
-                        {
-                            if(is_array($this->cols)){
-                                $var = $row[$this->cols[0]];
-                                $value = $row[$this->cols[1]];
-                                if($value==NULL)
-                                    $new = array('value'=>$var);
-                                else
-                                    $new = array($var=>$value);
-                                $ret = $ret + $new;
-                                /*
-                                foreach($this->cols AS $key) {
-                                    //$key = $col;
-                                    //$key = $row['name'];
-                                    $ret[$key] = $row['value'];
-                                }
-                                 * 
-                                 */
-                            } else {
-                                $key = $this->cols;
-                                $ret[$key] = $row['value'];
-                            }
-                        }
-                    //}
-                    //else
-                    //    $ret = mysql_fetch_assoc($result);
-
-                    // End Development Section
-                    $this->dbgMsg("Result fetched.", __METHOD__);
+                	die("Return type assoc is not implemented.");
                     break;
                 case 'field':
                     $ret = mysql_fetch_field($result);
