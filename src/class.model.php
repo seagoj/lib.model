@@ -316,6 +316,9 @@ class model
 
     private function setDbg()
     {
+    	/*
+    	 * @TODO Trigger DBG from config file
+    	 */
         $this->dbg = isset($_REQUEST['dbg']);
         if($this->dbg) require_once("lib.dbg/class.dbg.php");
     }
@@ -546,11 +549,62 @@ class model
         $this->dbgMsg("BoF ".rand(), __METHOD__);
 
         $this->dbgMsg("EoF", __METHOD__);
+        
+        /*
+         *  public function unitTest()
+    {
+        try
+        {
+            $select = new model();
+            $select->from('`464119_nxtlvl`.`config`');
+            $select->type('SELECT');
+            $select->columns('`value`');
+            $select->where("`variable`='companyName'");
+            $valid = "SELECT `value` FROM `464119_nxtlvl`.`config` WHERE `variable`='companyName'";
+            if($select->assemble() != $valid)
+                print "SELECT method failed unit test.";
+            else
+                print "SELECT method passed unit test.";
+
+            $insert = new model();
+            $insert->from('`464119_nxtlvl`.`config`');
+            $insert->type('INSERT');
+            $insert->columns('`variable`,`value`');
+            $insert->values("'companyName','test'");
+            $valid = "INSERT INTO `464119_nxtlvl`.`config` (`variable`,`value`) VALUES ('companyName','test')";
+            if($insert->assemble() != $valid)
+                print "INSERT method failed unit test.";
+            else
+                print "INSERT method passed unit test.";
+
+            $update = new model();
+            $update->from('`464119_nxtlvl`.`config`');
+            $update->type('UPDATE');
+            $update->columns('`variable`,`value`');
+            $update->values("'companyName','test'");
+            $update->where(true);
+            $valid = "UPDATE `464119_nxtlvl`.`config` SET `variable`='companyName',`value`='test' WHERE 1";
+            if($update->assemble() != $valid)
+                print "UPDATE method failed unit test.";
+            else
+                print "UPDATE method passed unit test.";
+        }
+        catch (Exception $e)
+        {
+            print $e;
+        }
+    }
+
+         */
     }
 }
 
 if(_DEBUG_)
 {
+	/*
+	 * @TODO trigger Unit testing from config file
+	 */
+	
     //$model = new model('portfolio','dbconfig','select');
     // print $model->assemble();
     //$model->query();

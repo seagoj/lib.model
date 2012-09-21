@@ -7,4 +7,7 @@
         "hostname"=>'mysql50-44.wc1.dfw1.stabletransit.com',
         "port"=>''
         );
+    
+    $dbg = false;
+    $unit = false;
 ?>
