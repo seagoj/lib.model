@@ -7,7 +7,6 @@
         "hostname"=>'',
         "port"=>''
         );
-    
+
     $dbg = false;
     $unit = false;
-?>

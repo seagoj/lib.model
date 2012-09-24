@@ -1,9 +1,7 @@
 <?php
-include_once('../inc.config.php');
-if($dbg)
-	require_once($libpath.'/lib.dbg/src/class.dbg.php');
-dbg::msg("It works!");
+namespace seago\devtools;
 
+include_once '../inc.config.php';
 
 /**
  * Model class for personal MVC framework
@@ -33,21 +31,22 @@ class model
      * @done  sets model.conn to connection object based on DB type
      * @action  sets model.tbl to default table, if passed
      * @action  sets model.query to default query type, if passed
-     * @param   $tbl    STRING  Choose which table in the database to act upon
-     * @param   $query   STRING  Set action to work on the table
-     * @param   $build  BOOL    If true, create table if table doesn't exist
-     * @return  void
+     * @param       $tbl   STRING  Choose which table in the database to act upon
+     * @param       $query STRING  Set action to work on the table
+     * @param       $build BOOL    If true, create table if table doesn't exist
+     * @return void
      */
-    function __construct ($id, $tbl=NULL, $query=NULL, $dbtype='mysql')
+    public function __construct ($id, $tbl=NULL, $query=NULL, $dbtype='mysql')
     {
-        $this->setDbg();
-        
-        if($this->setDBType($dbtype)) {
+        $this->setDbg(_DBG_);
+        if(_DBG_) dbg::msg("dbg is in scope of model class");
+
+        if ($this->setDBType($dbtype)) {
             $this->id = $id;
 
             $this->setCredentials();
 
-            switch($this->dbtype) {
+            switch ($this->dbtype) {
                 case 'mysql':
                     $this->dbgMsg("Using mysql connection type.", __METHOD__);
                     if(!is_null(_DB_PORT_))
@@ -67,7 +66,7 @@ class model
                 case 'nosql':
                     $this->dbgMsg("Using nosql connection type.", __METHOD__);
                     /* @todo   initialize connection to NoSQL */
-                    
+
                     /* end todo */
                     break;
                 default:
@@ -84,11 +83,10 @@ class model
             // set model.type to current type if it is passed on object initialization
             if(!is_null($query))
                 $this->setQuery($query);
-        }
-        else
+        } else
             $this->dbgMsg($dbtype." is not a supported database type.", __METHOD__, true);
     }
-    function __destruct ()
+    public function __destruct ()
     {
         $this->dbgMsg("Initialized", __METHOD__);
         /*****************************************/
@@ -106,7 +104,7 @@ class model
             $tbl = '`'._DB_NAME_.'`.`'.$tbl.'`';
 
         $this->tbl = $this->validateTbl($tbl);
-        
+
         $this->dbgMsg("model.tbl set to $tbl", __METHOD__);
     }
     public function columns ($cols='*')
@@ -133,13 +131,13 @@ class model
         /*****************************************/
 
         $query = strtolower($query);
-        switch($query) {
+        switch ($query) {
             case 'insertupdate':
                 $this->query = 'INSERT';
                 $this->updateOnDup=true;
                 break;
             case 'default':
-                if(!$this->dbg) {
+                if (!$this->dbg) {
                     $this->query = NULL;
                     $this->dbgMsg("model.query set to $query, but not in debug mode.", __METHOD__, true);
                 }
@@ -169,8 +167,7 @@ class model
             'row'
             );
 
-        if(in_array($retType, $validRetTypes))
-        {
+        if (in_array($retType, $validRetTypes)) {
             $sql = $this->assemble();
             $result = mysql_query($sql);
             $this->rowCount = mysql_num_rows($result);
@@ -179,8 +176,7 @@ class model
 
 
 
-            switch($retType)
-            {
+            switch ($retType) {
                 case 'array':
                     $ret = mysql_fetch_array($result);
                     break;
@@ -188,14 +184,13 @@ class model
                     $this->dbgMsg("Return type is assoc", __METHOD__);
                     // Begin Development Section
 
-                    //if($this->rowCount > 1) {
+                    //if ($this->rowCount > 1) {
                         $ret =array();
                         $count = 0;
 
 
-                        while($row=mysql_fetch_assoc($result))
-                        {
-                            if(is_array($this->cols)){
+                        while ($row=mysql_fetch_assoc($result)) {
+                            if (is_array($this->cols)) {
                                 $var = $row[$this->cols[0]];
                                 $value = $row[$this->cols[1]];
                                 if($value==NULL)
@@ -204,12 +199,12 @@ class model
                                     $new = array($var=>$value);
                                 $ret = $ret + $new;
                                 /*
-                                foreach($this->cols AS $key) {
+                                foreach ($this->cols AS $key) {
                                     //$key = $col;
                                     //$key = $row['name'];
                                     $ret[$key] = $row['value'];
                                 }
-                                 * 
+                                 *
                                  */
                             } else {
                                 $key = $this->cols;
@@ -237,9 +232,9 @@ class model
                     break;
              };
             $this->reset();
+
             return $ret;
-        }
-        else
+        } else
             $this->dbgMsg("Return type must be ".implode(', ', $validRetTypes).".", __METHOD__, true);
     }
     public function values($vals)
@@ -254,15 +249,15 @@ class model
         $this->dbgMsg("Initialized", __METHOD__);
         /*****************************************/
 
-        if(is_array($this->cols)) {
-            foreach($this->cols AS $col) {
+        if (is_array($this->cols)) {
+            foreach ($this->cols AS $col) {
                 ++$count==1 ? $colsStr = '`'.$this->mysqlSanitize($col).'`' : $colsStr .= ",`".$this->mysqlSanitize($col)."`";
                 /*
                 if(!isset($colStr))
                     $colsStr = '`'.$this->mysqlSanitize($col).'`';
                 else
                     $colsStr .= ",`".$this->mysqlSanitize($col)."`";
-                 * 
+                 *
                  */
             }
         } else {
@@ -271,8 +266,7 @@ class model
             else
                 $colsStr .= ",`".$this->mysqlSanitize($this->cols)."`";
         }
-        switch($this->query)
-        {
+        switch ($this->query) {
             case 'select':
                 return "SELECT $colsStr FROM $this->tbl WHERE $this->where";
                 break;
@@ -284,6 +278,7 @@ class model
 
                 $sql = "INSERT INTO $this->tbl ($colsStr) VALUES ($this->values)";
                 $this->updateOnDup ? $sql .= " ON DUPLICATE KEY UPDATE $this->where" : $sql .= '';
+
                 return $sql;
                 break;
             case 'update':
@@ -291,10 +286,8 @@ class model
 
                 if(count($this->cols)!=count($valsArr))
                     throw Exception("number of columns != number of values");
-                else
-                {
-                    for($i=0; $i<count($this->cols); $i++)
-                    {
+                else {
+                    for ($i=0; $i<count($this->cols); $i++) {
                         if(!isset($sql))
                             $sql = "$this->cols[$i]=$valsArr[$i]";
                         else
@@ -311,6 +304,7 @@ class model
                      *  `sql` VARCHAR( 1000 ) NOT NULL
                      *) ENGINE = INNODB
                      */
+
                     return "CREATE TABLE IF NOT EXISTS $this->tbl ( `index` INT NOT NULL AUTO_INCREMENT PRIMARY KEY , `name` VARCHAR( 50 ) NOT NULL , `sql` VARCHAR( 1000 ) NOT NULL) ENGINE = INNODB";
                 break;
         }
@@ -322,11 +316,11 @@ class model
 
     private function setDbg()
     {
-    	/*
-    	 * @TODO Trigger DBG from config file
-    	 */
-        $this->dbg = isset($_REQUEST['dbg']);
-        if($this->dbg) require_once("lib.dbg/class.dbg.php");
+        /*
+         * @TODO Trigger DBG from config file
+         */
+        $this->dbg = _DBG_;
+        if($this->dbg) require_once(_LIB_PATH_."/lib.dbg/src/class.dbg.php");
     }
     private function dbgMsg($msg, $method, $exception=false)
     {
@@ -349,6 +343,7 @@ class model
             throw Exception("$dbtype is not a supported database type.");
             $this->dbgMsg("$dbtype is not a supported database type.", __METHOD__, true);
         }
+
         return (isset($this->dbtype));
     }
     private function validateTbl($tbl)
@@ -356,18 +351,17 @@ class model
         $this->dbgMsg("Initialized", __METHOD__);
         /*****************************************/
 
-        switch($this->dbtype) {
+        switch ($this->dbtype) {
             case 'mysql':
                 $pattern = "/`([^`]*)`\.`([^`]*)`/";
 
-                if(preg_match_all($pattern, $tbl, $tokens)) {
+                if (preg_match_all($pattern, $tbl, $tokens)) {
                     $dbTok = $tokens[1][0];
                     $tblTok = $tokens[2][0];
 
                 return '`'.$this->mysqlSanitize($dbTok).'`.`'
                     .$this->mysqlSanitize($tblTok).'`';
-                }
-                else $this->dbgMsg("$tbl is not a valid `db`.'tableName'", __METHOD__, true);
+                } else $this->dbgMsg("$tbl is not a valid `db`.'tableName'", __METHOD__, true);
                 break;
             case 'mongo':
                 /* @todo     */
@@ -392,21 +386,18 @@ class model
         /*
         $pattern = "/`([^`]*)`,?/";
 
-        if(preg_match_all($pattern, $cols, $tokens))
-        {
-            foreach($tokens[1] AS $col)
-            {
+        if (preg_match_all($pattern, $cols, $tokens)) {
+            foreach ($tokens[1] AS $col) {
                 if(!isset($this->cols))
                     $this->cols = '`'.$this->mysqlSanitize($col).'`';
                 else
                     $this->cols .= ",`".$this->mysqlSanitize($col)."`";
             }
-        }
-        else
+        } else
             $this->dbgMsg("$cols is not a valid `col1`,`col2`", __METHOD__, true);
          */
 
-        switch($this->dbtype) {
+        switch ($this->dbtype) {
             case 'mysql':
                 $this->cols = $cols;
                 break;
@@ -414,7 +405,7 @@ class model
                 $this->dbgMsg("$this->dbtype is not a supported database type", __METHOD__, true);
                 break;
         }
-        
+
             if($this->cols!=NULL)
                 $this->dbgMsg("model.cols set to $this->cols", __METHOD__);
             else
@@ -426,11 +417,10 @@ class model
         /*****************************************/
 
         /*
-        if($where!==true) {
+        if ($where!==true) {
             $pattern = "/`([^`]*)`(\=| LIKE )'([^`]*)'/";
 
-            if(preg_match_all($pattern, $where, $tokens))
-            {
+            if (preg_match_all($pattern, $where, $tokens)) {
                 $validConjuntion = array('and','AND','or','OR');
 
                 if(strpos($where, ' LIKE '))
@@ -443,23 +433,20 @@ class model
 
                 if(!isset($this->where))
                     $this->where = "`".$this->mysqlSanitize($column)."`".$operator."'".$this->mysqlSanitize($value)."'";
-                else
-                {
+                else {
                     if(in_array($validConjuction, $conjunction))
                         $this->where .= " $conjunction ".$condition;
                     else throw Exception("Invalid conjunction: $conjunction");
                 }
-            }
-            else
+            } else
                 $this->dbgMsg("$where is not a valid `column`='value'", __METHOD__, true);
-      }
-      else
+      } else
         $this->where=true;
          */
 
         print $conjuction;
 
-        switch($this->dbtype) {
+        switch ($this->dbtype) {
             case 'mysql':
                 foreach ($where AS $set) {
                     ++$count==1 ? $conditional.="" : $conditional.=" $conjunction ";
@@ -478,17 +465,14 @@ class model
 
         $pattern = "/'([^']*)',?/";
 
-        if(preg_match_all($pattern, $vals, $tokens))
-        {
-            foreach($tokens[1] AS $val)
-            {
+        if (preg_match_all($pattern, $vals, $tokens)) {
+            foreach ($tokens[1] AS $val) {
                 if(!isset($this->values))
                     $this->values = "'".$this->mysqlSanitize($val)."'";
                 else
                     $this->values .= ",'".$this->mysqlSanitize($val)."'";
             }
-        }
-        else
+        } else
             $this->dbgMsg("$vals is not a valid `val1`,`val2`", __METHOD__, true);
     }
     private function mysqlSanitize($dirty)
@@ -497,12 +481,11 @@ class model
         /*****************************************/
 
         $clean = mysql_real_escape_string($dirty, $this->conn);
-        if($clean)
-        {
+        if ($clean) {
             $this->dbgMsg("Return $clean", __METHOD__);
+
             return $clean;
-        }
-        else $this->dbgMsg("Attempt to sanitize $dirty failed.", __METHOD__, true);
+        } else $this->dbgMsg("Attempt to sanitize $dirty failed.", __METHOD__, true);
     }
     private function reset()
     {
@@ -518,36 +501,24 @@ class model
         switch ($this->dbtype) {
             case 'mysql':
                 $services = getenv("VCAP_SERVICES");
-                if($services) {
+                dbg::dump(getenv("VCAP_SERVICES"));
+                if ($services) {
                     $services_json = json_decode($services,true);
                     $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
-                } else {
-                    $path_array = explode('/',$_SERVER['DOCUMENT_ROOT']);
-                    for($i=1; $i<count($path_array); $i++) {
-                        if($path_array[$i]=='web')
-                            $end = $i;
-                    }
-                    for($j=1; $j<=$end;$j++) {
-                        $path .= '/'.$path_array[$j];
-                    }
-                    $path .= '/secure/'.$this->id.'.php';
-                    require_once($path);
-                }
 
-                if(isset($mysql_config)) {
-                    //return $mysql_config;
                     define('_DB_NAME_', $mysql_config["dbname"]);
                     define('_DB_USER_', $mysql_config["user"]);
                     define('_DB_PASSWORD_', $mysql_config["password"]);
                     define('_DB_HOST_', $mysql_config["hostname"]);
                     define('_DB_PORT_', $mysql_config["port"]);
-                } else $this->dbgMsg("Database credentials could not be discovered.", __METHOD__, true);
+                } else if(!_CONFIG_)
+                    $this->dbgMsg("Database credentials could not be discovered.", __METHOD__, true);
                 break;
             case 'mongo':
                 break;
 
         }
-        
+
     }
 
     public function UNIT()
@@ -555,12 +526,11 @@ class model
         $this->dbgMsg("BoF ".rand(), __METHOD__);
 
         $this->dbgMsg("EoF", __METHOD__);
-        
+
         /*
          *  public function unitTest()
     {
-        try
-        {
+        try {
             $select = new model();
             $select->from('`464119_nxtlvl`.`config`');
             $select->type('SELECT');
@@ -594,9 +564,7 @@ class model
                 print "UPDATE method failed unit test.";
             else
                 print "UPDATE method passed unit test.";
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             print $e;
         }
     }
@@ -605,15 +573,18 @@ class model
     }
 }
 
-if(_DEBUG_)
-{
-	/*
-	 * @TODO trigger Unit testing from config file
-	 */
-	
+if (_DBG_) {
+    $model = new model('portfolio','dbconfig','select');
+    dbg::dump($model->assemble());
+}
+
+/*
+if (_DEBUG_) {
+    //@TODO trigger Unit testing from config file
+
     //$model = new model('portfolio','dbconfig','select');
     // print $model->assemble();
     //$model->query();
     //$model->UNIT();
 }
-?>
+*/
