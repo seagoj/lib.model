@@ -1,7 +1,7 @@
 <?php
 namespace seago\devtools;
 
-include_once '../inc.config.php';
+require_once '../config/config.php';
 
 /**
  * Model class for personal MVC framework
@@ -94,6 +94,7 @@ class model
         mysql_close($this->conn);
         $this->dbgMsg("model.conn closed", __METHOD__);
     }
+
 
     public function from ($tbl)
     {
@@ -320,7 +321,11 @@ class model
          * @TODO Trigger DBG from config file
          */
         $this->dbg = _DBG_;
-        if($this->dbg) require_once(_LIB_PATH_."/lib.dbg/src/class.dbg.php");
+        //if($this->dbg) require_once(_LIB_PATH_."/lib.dbg/src/dbg.php");
+        if(_DBG_) {
+        	$this->dbg = new dbg();
+        	dbg::msg("DBG loaded");
+        }
     }
     private function dbgMsg($msg, $method, $exception=false)
     {
