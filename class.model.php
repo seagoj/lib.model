@@ -189,11 +189,13 @@ class model
 
                         while($row=mysql_fetch_assoc($result))
                         {
-                            print "this->cols: ".$this->cols;
                             if(is_array($this->cols)){
                                 $var = $row[$this->cols[0]];
                                 $value = $row[$this->cols[1]];
-                                $new = array($var=>$value);
+                                if($value==NULL)
+                                    $new = array('value'=>$var);
+                                else
+                                    $new = array($var=>$value);
                                 $ret = $ret + $new;
                                 /*
                                 foreach($this->cols AS $key) {
@@ -533,7 +535,7 @@ class model
                 } else $this->dbgMsg("Database credentials could not be discovered.", __METHOD__, true);
                 break;
             case 'mongo':
-
+                break;
 
         }
         
@@ -541,16 +543,9 @@ class model
 
     public function UNIT()
     {
-        include_once('../lib.dbg/class.dbg.php');
+        $this->dbgMsg("BoF ".rand(), __METHOD__);
 
-        $dbg = new dbg();
-        //$this->dbgMsg("BoF ".rand(), __METHOD__);
-        $unit = new model('portfolio');
-        $dbg->assert($this->dbg == $_REQUEST['dbg']);
-        $dbg->assert($this->dbtype=='mysql');
-        
-
-        //$this->dbgMsg("EoF", __METHOD__);
+        $this->dbgMsg("EoF", __METHOD__);
     }
 }
 
